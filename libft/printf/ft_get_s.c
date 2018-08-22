@@ -1,29 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_get_s.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: prippa <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/22 17:47:31 by prippa            #+#    #+#             */
-/*   Updated: 2017/11/22 17:47:33 by prippa           ###   ########.fr       */
+/*   Created: 2018/01/15 13:06:02 by prippa            #+#    #+#             */
+/*   Updated: 2018/01/15 13:06:07 by prippa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "ft_printf.h"
 
-# define BUFF_SIZE 32
-# include "libft.h"
-# include <fcntl.h>
-
-typedef	struct		s_gnl
+char	*ft_get_s(t_printf *fpf)
 {
-	char			*s;
-	int				fd;
-	struct s_gnl	*next;
-}					t_gnl;
+	void	*data;
+	char	*str;
 
-int					get_next_line(const int fd, char **line);
-
-#endif
+	data = va_arg(fpf->args, void *);
+	if (!data)
+		str = ft_strdup("(null)");
+	else if (FC == 'S' || fpf->size_flag == SF_L)
+		str = ft_wstr_to_str((wchar_t *)data);
+	else
+		str = ft_strdup((char *)data);
+	return (str);
+}

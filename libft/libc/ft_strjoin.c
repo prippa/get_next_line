@@ -1,29 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: prippa <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/22 17:47:31 by prippa            #+#    #+#             */
-/*   Updated: 2017/11/22 17:47:33 by prippa           ###   ########.fr       */
+/*   Created: 2017/11/06 13:54:41 by prippa            #+#    #+#             */
+/*   Updated: 2017/11/06 13:54:54 by prippa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# define BUFF_SIZE 32
-# include "libft.h"
-# include <fcntl.h>
-
-typedef	struct		s_gnl
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	char			*s;
-	int				fd;
-	struct s_gnl	*next;
-}					t_gnl;
+	char	*new_obj;
 
-int					get_next_line(const int fd, char **line);
-
-#endif
+	if (!s1 || !s2)
+		return (NULL);
+	if (!(new_obj = (char *)malloc(sizeof(char) *
+		(ft_strlen(s1) + ft_strlen(s2) + 1))))
+		return (NULL);
+	ft_strcpy(new_obj, s1);
+	ft_strcat(new_obj, s2);
+	return (new_obj);
+}

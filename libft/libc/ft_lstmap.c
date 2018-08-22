@@ -1,29 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: prippa <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/22 17:47:31 by prippa            #+#    #+#             */
-/*   Updated: 2017/11/22 17:47:33 by prippa           ###   ########.fr       */
+/*   Created: 2017/11/08 13:38:55 by prippa            #+#    #+#             */
+/*   Updated: 2017/11/08 13:39:04 by prippa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# define BUFF_SIZE 32
-# include "libft.h"
-# include <fcntl.h>
-
-typedef	struct		s_gnl
+t_list	*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem))
 {
-	char			*s;
-	int				fd;
-	struct s_gnl	*next;
-}					t_gnl;
+	t_list *link;
+	t_list *new_obj;
 
-int					get_next_line(const int fd, char **line);
-
-#endif
+	if (!lst)
+		return (NULL);
+	if ((new_obj = ft_lstnew(lst->content, lst->content_size)) == NULL)
+		return (NULL);
+	new_obj = f(lst);
+	link = new_obj;
+	while (lst->next)
+	{
+		link->next = f(lst->next);
+		link = link->next;
+		lst = lst->next;
+	}
+	return (new_obj);
+}

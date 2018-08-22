@@ -1,29 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_arrnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: prippa <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/22 17:47:31 by prippa            #+#    #+#             */
-/*   Updated: 2017/11/22 17:47:33 by prippa           ###   ########.fr       */
+/*   Created: 2018/02/26 15:44:21 by prippa            #+#    #+#             */
+/*   Updated: 2018/02/26 15:44:26 by prippa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# define BUFF_SIZE 32
-# include "libft.h"
-# include <fcntl.h>
-
-typedef	struct		s_gnl
+char	**ft_arrnew(size_t y, size_t x, int c)
 {
-	char			*s;
-	int				fd;
-	struct s_gnl	*next;
-}					t_gnl;
+	char **arr;
+	char ch;
 
-int					get_next_line(const int fd, char **line);
-
-#endif
+	ch = 0;
+	if (!(arr = (char **)malloc(sizeof(char *) * (y + 1))))
+		return (NULL);
+	arr[y] = NULL;
+	while (y--)
+	{
+		if (!(arr[y] = (char *)malloc(sizeof(char) * (x + 1))))
+			return (NULL);
+		ft_memset(arr[y], c, x);
+		arr[y][x] = ch;
+	}
+	return (arr);
+}

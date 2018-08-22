@@ -1,29 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: prippa <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/22 17:47:31 by prippa            #+#    #+#             */
-/*   Updated: 2017/11/22 17:47:33 by prippa           ###   ########.fr       */
+/*   Created: 2017/11/06 13:57:45 by prippa            #+#    #+#             */
+/*   Updated: 2017/11/06 13:57:52 by prippa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# define BUFF_SIZE 32
-# include "libft.h"
-# include <fcntl.h>
-
-typedef	struct		s_gnl
+char	*ft_strtrim(char const *s)
 {
-	char			*s;
-	int				fd;
-	struct s_gnl	*next;
-}					t_gnl;
+	char const *start;
+	char const *end;
 
-int					get_next_line(const int fd, char **line);
-
-#endif
+	if (!s)
+		return (NULL);
+	start = s;
+	while (ft_isspace(*start))
+		++start;
+	end = s;
+	while (*end)
+		++end;
+	--end;
+	while (ft_isspace(*end))
+		--end;
+	if (end < start)
+		return (ft_strdup(""));
+	return (ft_strsub(s, (start - s), (end - start + 1)));
+}

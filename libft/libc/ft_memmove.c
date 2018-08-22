@@ -1,29 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: prippa <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/22 17:47:31 by prippa            #+#    #+#             */
-/*   Updated: 2017/11/22 17:47:33 by prippa           ###   ########.fr       */
+/*   Created: 2017/10/30 15:15:53 by prippa            #+#    #+#             */
+/*   Updated: 2017/11/08 15:08:39 by prippa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# define BUFF_SIZE 32
-# include "libft.h"
-# include <fcntl.h>
-
-typedef	struct		s_gnl
+void	*ft_memmove(void *dst, const void *src, size_t len)
 {
-	char			*s;
-	int				fd;
-	struct s_gnl	*next;
-}					t_gnl;
+	unsigned char *ptr1;
+	unsigned char *ptr2;
 
-int					get_next_line(const int fd, char **line);
-
-#endif
+	if (src < dst)
+		ft_memcpy(dst, src, len);
+	else
+	{
+		ptr1 = (unsigned char *)dst;
+		ptr2 = (unsigned char *)src;
+		while (len--)
+			*ptr1++ = *ptr2++;
+	}
+	return (dst);
+}

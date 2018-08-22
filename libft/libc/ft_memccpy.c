@@ -1,29 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_memccpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: prippa <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/22 17:47:31 by prippa            #+#    #+#             */
-/*   Updated: 2017/11/22 17:47:33 by prippa           ###   ########.fr       */
+/*   Created: 2017/10/30 14:28:28 by prippa            #+#    #+#             */
+/*   Updated: 2017/10/30 14:28:38 by prippa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# define BUFF_SIZE 32
-# include "libft.h"
-# include <fcntl.h>
-
-typedef	struct		s_gnl
+void	*ft_memccpy(void *dst, const void *src, int c, size_t n)
 {
-	char			*s;
-	int				fd;
-	struct s_gnl	*next;
-}					t_gnl;
+	unsigned char	*ptr1;
+	unsigned char	*ptr2;
+	unsigned char	ch;
 
-int					get_next_line(const int fd, char **line);
-
-#endif
+	ptr1 = (unsigned char *)dst;
+	ptr2 = (unsigned char *)src;
+	ch = (unsigned char)c;
+	while (n--)
+		if ((*ptr1++ = *ptr2++) == ch)
+			return (ptr1);
+	return (NULL);
+}

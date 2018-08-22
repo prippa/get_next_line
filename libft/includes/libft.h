@@ -15,6 +15,10 @@
 
 # include <unistd.h>
 # include <stdlib.h>
+# include <fcntl.h>
+
+# define BUFF_SIZE 32
+# define ABS(x) (((x) < 0) ? -(x) : (x))
 
 typedef	struct		s_list
 {
@@ -86,13 +90,32 @@ void				ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 
 int					ft_isspace(int c);
-int					ft_isstrdigit(const char *str);
-int					ft_isstralpha(const char *str);
-int					ft_isuppercase(int c);
-int					ft_islowercase(int c);
-int					ft_isstruppercase(const char *str);
-int					ft_isstrlowercase(const char *str);
-char				*ft_tostrlowercase(const char *str);
-char				*ft_tostruppercase(const char *str);
+int					ft_isupper(int c);
+int					ft_islower(int c);
+int					ft_str_is_digit(const char *str);
+int					ft_str_is_alpha(const char *str);
+int					ft_str_is_upper(const char *str);
+int					ft_str_is_lower(const char *str);
+void				ft_str_to_lower(char **str);
+void				ft_str_to_upper(char **str);
+int					get_next_line(const int fd, char **line);
+char				*ft_itoa_base(unsigned long long int num,
+					int base, int letter);
+char				**ft_arrnew(size_t y, size_t x, int c);
+size_t				ft_arrlen(char **arr);
+void				ft_arr_free(char ***arr);
+void				ft_str_free(char **str);
+short				ft_nbrlen(long long int nb);
+void				ft_putarr(char **arr);
+void				ft_putarr_fd(char **arr, int fd);
+long long int		ft_atoi_base(const char *str, int base);
+char				*ft_itoa_max(long long int n);
+long long int		ft_atoi_max(char *str);
+void				ft_clear(void);
+void				*ft_memrev(void *dst, size_t n);
+
+char				*ft_joinfree(char *s1, char *s2, int j);
+int					ft_pow(int base, int level);
+int					ft_bin_to_int(char *str, int index);
 
 #endif

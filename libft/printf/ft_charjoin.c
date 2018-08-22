@@ -1,29 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_charjoin.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: prippa <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/22 17:47:31 by prippa            #+#    #+#             */
-/*   Updated: 2017/11/22 17:47:33 by prippa           ###   ########.fr       */
+/*   Created: 2018/01/15 12:57:21 by prippa            #+#    #+#             */
+/*   Updated: 2018/01/15 12:57:23 by prippa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "ft_printf.h"
 
-# define BUFF_SIZE 32
-# include "libft.h"
-# include <fcntl.h>
-
-typedef	struct		s_gnl
+void	ft_charjoin(t_printf *fpf, int n, char c)
 {
-	char			*s;
-	int				fd;
-	struct s_gnl	*next;
-}					t_gnl;
+	char	*str;
+	int		size;
 
-int					get_next_line(const int fd, char **line);
-
-#endif
+	size = n;
+	if (n < 1)
+		return ;
+	if (!(str = (char *)malloc(sizeof(char) * n + 1)))
+		return ;
+	str[n] = '\0';
+	while (--n >= 0)
+		str[n] = c;
+	ft_pf_strjoin(fpf, str, size);
+	free(str);
+}

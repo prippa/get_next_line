@@ -1,29 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_strsub.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: prippa <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/22 17:47:31 by prippa            #+#    #+#             */
-/*   Updated: 2017/11/22 17:47:33 by prippa           ###   ########.fr       */
+/*   Created: 2017/11/06 13:55:18 by prippa            #+#    #+#             */
+/*   Updated: 2017/11/06 13:55:21 by prippa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# define BUFF_SIZE 32
-# include "libft.h"
-# include <fcntl.h>
-
-typedef	struct		s_gnl
+char	*ft_strsub(char const *s, unsigned int start, size_t len)
 {
-	char			*s;
-	int				fd;
-	struct s_gnl	*next;
-}					t_gnl;
+	char	*new_obj;
 
-int					get_next_line(const int fd, char **line);
-
-#endif
+	if (!s)
+		return (NULL);
+	if (!(new_obj = (char *)malloc(sizeof(char) * len + 1)))
+		return (NULL);
+	while (start--)
+		++s;
+	ft_strncpy(new_obj, s, len);
+	new_obj[len] = 0;
+	return (new_obj);
+}

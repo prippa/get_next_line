@@ -13,8 +13,7 @@
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# define BUFF_SIZE 32
-# define BIG_BUFF_SIZE (BUFF_SIZE * BUFF_SIZE)
+# define BUFF_SIZE 80
 
 # include "libft.h"
 # include <fcntl.h>

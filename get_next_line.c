@@ -41,68 +41,31 @@ static int		gnl_remainder(t_gnl *file)
 			return (-1);
 		return (1);
 	}
-	if (!(tmp = ft_strdup(&file->s[file->i])))
+	tmp = file->s;
+	if (!(file->s = ft_strdup(&file->s[file->i])))
 		return (-1);
-	free(file->s);
-	if (!(file->s = ft_strdup(tmp)))
-		return (-1);
+	free(tmp);
 	file->i = 0;
 	return (1);
-}
-
-int ft_strkcat(char *dst, const char *src, size_t dstsize, size_t srclen)
-{
-	size_t dstlen;
-
-	dstlen = ft_strlen(dst);
-	if (dstlen + srclen > dstsize)
-		return (0);
-	ft_strcat(dst, src);
-	return (1);
-}
-
-char *ft_strjoin_free(char **dst, const char *src)
-{
-	char *tmp;
-
-	tmp = *dst;
-	if (!(*dst = (char *)malloc(sizeof(char) *
-		(ft_strlen(*dst) + ft_strlen(src) + 1))))
-			return (NULL);
-	ft_strcpy(*dst, tmp);
-	ft_strcat(*dst, src);
-	free(tmp);
-	return (*dst);
 }
 
 static int		gnl_read_file(t_gnl *file, char **line)
 {
 	ssize_t	ret;
-	char	read_buf[BUFF_SIZE + 1];
-	char	big_buf[BIG_BUFF_SIZE + 1];
+	char	buf[BUFF_SIZE + 1];
 
-	big_buf[0] = 0;
-	while ((ret = read(file->fd, read_buf, BUFF_SIZE)) > 0)
+	while ((ret = read(file->fd, buf, BUFF_SIZE)) > 0)
 	{
-		read_buf[ret] = 0;
-		if (!ft_strkcat(big_buf, read_buf, BIG_BUFF_SIZE, ret))
-		{
-			if (!(ft_strjoin_free(&file->s, big_buf)))
-				return (-1);
-			ft_strcpy(big_buf, read_buf);
-		}
-		if (ft_strchr(read_buf, '\n'))
+		buf[ret] = 0;
+		if (!(ft_strjoin_free(&file->s, buf, ft_strlen(file->s), ret)))
+			return (-1);
+		if (ft_strchr(buf, '\n'))
 			break ;
 	}
-	if (!(ft_strjoin_free(&file->s, big_buf)) || ret == -1)
+	if (ret == -1)
 		return (-1);
 	return (gnl_sub_line(file, line));
 }
-
-// static int		gnl_get_line(t_gnl *file, char **line)
-// {
-
-// }
 
 static t_gnl	*gnl_add_or_get_file(t_gnl **g, int fd)
 {

@@ -42,7 +42,7 @@ C_LIBC		= 	ft_atoi.c ft_bzero.c ft_isalnum.c ft_isalpha.c\
 			ft_strtrim.c ft_tolower.c ft_str_to_lower.c ft_str_to_upper.c\
 			ft_toupper.c ft_arr_free.c ft_arrlen.c ft_nbrlen.c\
 			ft_clear.c ft_arrnew.c ft_putarr.c ft_putarr_fd.c\
-			ft_memrev.c\
+			ft_memrev.c ft_strjoin_free.c\
 
 C_FPF		= 	ft_printf.c ft_dprintf.c\
 				ft_pf_strjoin.c ft_charjoin.c\

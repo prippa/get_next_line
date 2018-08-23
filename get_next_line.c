@@ -14,23 +14,68 @@
 
 static int		gnl_sub_line(t_gnl *file, char **line)
 {
+	unsigned int start;
+
+	start = (unsigned int)file->i;
+	if (!file->s[file->i])
+	{
+		ft_strdel(&file->s);
+		return (0);
+	}
+	while (file->s[file->i] && file->s[file->i] != '\n')
+		++file->i;
+	*line = ft_strsub(file->s, start,  file->i - start);
+	if (file->s[file->i])
+		++file->i;
+	return (1);
+}
+
+static int		gnl_remainder(t_gnl *file)
+{
+	char *tmp;
+
+	if (!file->s)
+	{
+		if (!(file->s = ft_strdup("")))
+			return (-1);
+		return (1);
+	}
+	if (!(tmp = ft_strdup(&file->s[file->i])))
+		return (-1);
+	free(file->s);
+	if (!(file->s = ft_strdup(tmp)))
+		return (-1);
+	file->i = 0;
 	return (1);
 }
 
 static int		gnl_get_line(t_gnl *file, char **line)
 {
-	ssize_t	ret;
+	ssize_t	r;
 	char	read_buf[BUFF_SIZE + 1];
-	// char	big_buf[]
+	char	*t;
+	// char	big_buf[BIG_BUFF_SIZE + 1];
 
-	if (file->s && ft_strchr(file->s, '\n'))
+	if (file->s && ft_strchr(&file->s[file->i], '\n'))
 		return (gnl_sub_line(file, line));
-	while ((ret = read(file->fd, read_buf, BUFF_SIZE)) > 0)
+	if ((gnl_remainder(file)) == -1)
+		return (-1);
+	while ((r = read(file->fd, read_buf, BUFF_SIZE)) > 0)
 	{
-
+		read_buf[r] = 0;
+		if (!(t = (char*)malloc(sizeof(char) * ((r + ft_strlen(file->s)) + 1))))
+			return (-1);
+		ft_strcpy(t, file->s);
+		ft_strcat(t, read_buf);
+		free(file->s);
+		if (!(file->s = ft_strdup(t)))
+			return (-1);
+		free(t);
+		if (ft_strchr(read_buf, '\n'))
+			break ;
 	}
-	if (!file->s || ret == -1)
-		return (ret);
+	if (r == -1)
+		return (-1);
 	return (gnl_sub_line(file, line));
 }
 
@@ -48,6 +93,7 @@ static t_gnl	*gnl_add_or_get_file(t_gnl **g, int fd)
 	if (!(file = (t_gnl *)malloc(sizeof(t_gnl))))
 		return(NULL);
 	file->s = NULL;
+	file->i = 0;
 	file->fd = fd;
 	file->next = *g;
 	*g = file;
@@ -57,12 +103,11 @@ static t_gnl	*gnl_add_or_get_file(t_gnl **g, int fd)
 int				get_next_line(int const fd, char **line)
 {
 	static t_gnl	*g;
-	static t_gnl	*curent;
+	t_gnl			*curent;
 
 	if (fd < 0 || !line || read(fd, NULL, 0) == -1)
 		return (-1);
-	if (!g || curent->fd != fd)
-		if (!(curent = gnl_add_or_get_file(&g, fd)))
-			return (-1);
+	if (!(curent = gnl_add_or_get_file(&g, fd)))
+		return (-1);
 	return (gnl_get_line(curent, line));
 }

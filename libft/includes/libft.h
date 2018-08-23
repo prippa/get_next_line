@@ -17,7 +17,6 @@
 # include <stdlib.h>
 # include <fcntl.h>
 
-# define BUFF_SIZE 32
 # define ABS(x) (((x) < 0) ? -(x) : (x))
 
 typedef	struct		s_list
@@ -98,7 +97,6 @@ int					ft_str_is_upper(const char *str);
 int					ft_str_is_lower(const char *str);
 void				ft_str_to_lower(char **str);
 void				ft_str_to_upper(char **str);
-int					get_next_line(const int fd, char **line);
 char				*ft_itoa_base(unsigned long long int num,
 					int base, int letter);
 char				**ft_arrnew(size_t y, size_t x, int c);

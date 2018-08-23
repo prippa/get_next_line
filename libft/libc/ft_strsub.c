@@ -20,9 +20,7 @@ char	*ft_strsub(char const *s, unsigned int start, size_t len)
 		return (NULL);
 	if (!(new_obj = (char *)malloc(sizeof(char) * len + 1)))
 		return (NULL);
-	while (start--)
-		++s;
-	ft_strncpy(new_obj, s, len);
+	ft_strncpy(new_obj, &s[start], len);
 	new_obj[len] = 0;
 	return (new_obj);
 }

@@ -14,12 +14,15 @@
 # define GET_NEXT_LINE_H
 
 # define BUFF_SIZE 32
+// # define BIG_BUFF_SIZE (BUFF_SIZE * BUFF_SIZE)
+
 # include "libft.h"
 # include <fcntl.h>
 
 typedef	struct		s_gnl
 {
 	char			*s;
+	size_t			i;
 	int				fd;
 	struct s_gnl	*next;
 }					t_gnl;

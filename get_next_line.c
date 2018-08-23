@@ -16,15 +16,16 @@ static int		gnl_sub_line(t_gnl *file, char **line)
 {
 	unsigned int start;
 
-	start = (unsigned int)file->i;
 	if (!file->s[file->i])
 	{
 		ft_strdel(&file->s);
 		return (0);
 	}
+	start = (unsigned int)file->i;
 	while (file->s[file->i] && file->s[file->i] != '\n')
 		++file->i;
-	*line = ft_strsub(file->s, start,  file->i - start);
+	if (!(*line = ft_strsub(file->s, start,  file->i - start)))
+		return (-1);
 	if (file->s[file->i])
 		++file->i;
 	return (1);
@@ -49,35 +50,59 @@ static int		gnl_remainder(t_gnl *file)
 	return (1);
 }
 
-static int		gnl_get_line(t_gnl *file, char **line)
+int ft_strkcat(char *dst, const char *src, size_t dstsize, size_t srclen)
 {
-	ssize_t	r;
-	char	read_buf[BUFF_SIZE + 1];
-	char	*t;
-	// char	big_buf[BIG_BUFF_SIZE + 1];
+	size_t dstlen;
 
-	if (file->s && ft_strchr(&file->s[file->i], '\n'))
-		return (gnl_sub_line(file, line));
-	if ((gnl_remainder(file)) == -1)
-		return (-1);
-	while ((r = read(file->fd, read_buf, BUFF_SIZE)) > 0)
+	dstlen = ft_strlen(dst);
+	if (dstlen + srclen > dstsize)
+		return (0);
+	ft_strcat(dst, src);
+	return (1);
+}
+
+char *ft_strjoin_free(char **dst, const char *src)
+{
+	char *tmp;
+
+	tmp = *dst;
+	if (!(*dst = (char *)malloc(sizeof(char) *
+		(ft_strlen(*dst) + ft_strlen(src) + 1))))
+			return (NULL);
+	ft_strcpy(*dst, tmp);
+	ft_strcat(*dst, src);
+	free(tmp);
+	return (*dst);
+}
+
+static int		gnl_read_file(t_gnl *file, char **line)
+{
+	ssize_t	ret;
+	char	read_buf[BUFF_SIZE + 1];
+	char	big_buf[BIG_BUFF_SIZE + 1];
+
+	big_buf[0] = 0;
+	while ((ret = read(file->fd, read_buf, BUFF_SIZE)) > 0)
 	{
-		read_buf[r] = 0;
-		if (!(t = (char*)malloc(sizeof(char) * ((r + ft_strlen(file->s)) + 1))))
-			return (-1);
-		ft_strcpy(t, file->s);
-		ft_strcat(t, read_buf);
-		free(file->s);
-		if (!(file->s = ft_strdup(t)))
-			return (-1);
-		free(t);
+		read_buf[ret] = 0;
+		if (!ft_strkcat(big_buf, read_buf, BIG_BUFF_SIZE, ret))
+		{
+			if (!(ft_strjoin_free(&file->s, big_buf)))
+				return (-1);
+			ft_strcpy(big_buf, read_buf);
+		}
 		if (ft_strchr(read_buf, '\n'))
 			break ;
 	}
-	if (r == -1)
+	if (!(ft_strjoin_free(&file->s, big_buf)) || ret == -1)
 		return (-1);
 	return (gnl_sub_line(file, line));
 }
+
+// static int		gnl_get_line(t_gnl *file, char **line)
+// {
+
+// }
 
 static t_gnl	*gnl_add_or_get_file(t_gnl **g, int fd)
 {
@@ -109,5 +134,9 @@ int				get_next_line(int const fd, char **line)
 		return (-1);
 	if (!(curent = gnl_add_or_get_file(&g, fd)))
 		return (-1);
-	return (gnl_get_line(curent, line));
+	if (curent->s && ft_strchr(&curent->s[curent->i], '\n'))
+		return (gnl_sub_line(curent, line));
+	if ((gnl_remainder(curent)) == -1)
+		return (-1);
+	return (gnl_read_file(curent, line));
 }
